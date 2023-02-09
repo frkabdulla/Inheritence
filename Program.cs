@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inheritence
 {
     class Program
     {
+        //Main Method
         static void Main(string[] args)
         {
-            product desk= new Desk();
+            product desk = new Desk();
+            ((Desk)desk).TaxPercent= 2;
             desk.Price = 380;
             desk.Add();
             desk.Add();
@@ -23,12 +21,33 @@ namespace Inheritence
             drone.Add();
             Console.WriteLine($"total value in drone is {drone.TotalValue()}");
 
-            Console.ReadLine(); 
-            
-           
+            product TDrone = new TurboDrone();
+            TDrone.Price = 200;
+            TDrone.Add();
+            TDrone.Add();
+            Console.WriteLine($"total value in Turbodrone is {TDrone.TotalValue()}");
+
+            product SDrone = new StandardDrone();
+            SDrone.Price = 500;
+            SDrone.Add();
+            SDrone.Add();
+            Console.WriteLine($"total value in Standard drone is {SDrone.TotalValue()}");
+
+          
+            Console.ReadLine();
+
+
         }
     }
-    public class Drone : product 
+    public class TurboDrone : Drone
+    {
+
+    }
+    public class StandardDrone : Drone
+    {
+
+    }
+    public class Drone : product
     {
         public int Qtyincremented { get; set; }
         public Drone()
@@ -37,15 +56,21 @@ namespace Inheritence
         }
         public override void Add()
         {
-            _quantity = _quantity+ Qtyincremented;
+            _quantity = _quantity + Qtyincremented;
         }
 
     }
     public class Desk : product
     {
-        public Desk() 
+        public decimal TaxPercent { get; set; }
+        public Desk()
         {
 
+        }
+        public override decimal TotalValue()
+        {
+            decimal netTotal = base.TotalValue() - (base.TotalValue() * (TaxPercent / 100));
+            return netTotal;
         }
         public override void Add()
         {
@@ -59,7 +84,7 @@ namespace Inheritence
         public decimal Price { get; set; }
         public product()
         {
-            
+
         }
         public virtual void Add()
         {
@@ -69,13 +94,13 @@ namespace Inheritence
         {
             if (_quantity > 0)
             {
-                _quantity--; 
+                _quantity--;
             }
 
         }
-        public Decimal TotalValue()
+        public virtual Decimal TotalValue()
         {
-            return _quantity*Price;
+            return _quantity * Price;
         }
 
 
